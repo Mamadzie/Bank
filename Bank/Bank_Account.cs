@@ -68,12 +68,25 @@ namespace Bank
 
         private void Perevod_chyota(Bank_Account Naznachenie_Account, double amount)
         {
-            if (amount <= summa_check)
+            if (Naznachenie_Account.shyot_number != shyot_number)
             {
-                summa_check -= amount;
-                Naznachenie_Account.summa_check += amount;
+                if (amount <= summa_check)
+                {
+                    summa_check -= amount;
+                    Naznachenie_Account.summa_check += amount;
+                }
+                else
+                {
+                    Console.WriteLine("Недостаточно средств.");
+                    Console.ReadKey();
+                }
             }
-            else Console.WriteLine("Недостаточно средств.");
+            else
+            {
+                Console.WriteLine("Нельзя перевести средства себе");
+                Console.ReadKey();
+            }
+
         }
 
         public void PEREVOD_CHYOTA(Bank_Account Naznachenie_Account, double amount)

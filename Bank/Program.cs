@@ -10,15 +10,8 @@ class program
 
     static void Main(string[] args)
     {
-        int account;
-        Console.WriteLine("Введите количество аккаунтов(1 или 2): ");
-        bool Isvalidnumber = int.TryParse(Console.ReadLine(), out account);
-
-        while (account > 2)
-        {
-            Console.WriteLine("Ошибка! Введите заново: ");
-            Isvalidnumber = int.TryParse(Console.ReadLine(), out account);
-        }
+        Console.WriteLine("Введите количество аккаунтов: ");
+        int account = int.Parse(Console.ReadLine());
 
         Bank_Account[] akk = new Bank_Account[account];
 
@@ -35,17 +28,34 @@ class program
             akk[a].otk(number, name, balance);
         }
         Console.Clear();
+
+        int i = 1;
         foreach (Bank_Account a in akk)
         {
+            Console.WriteLine(i++);
             a.INFO();
             Console.WriteLine("\n");
         }
 
-        if (account == 1)
+        while (true)
         {
+            int schet = 0;
+
+            if (account > 1)
+            {
+                Console.Write("Выберите аккаунт над которым хотите произвести действие: ");
+                schet = int.Parse(Console.ReadLine()) - 1;
+            }
+
+            Console.Clear();
+
+            akk[schet].INFO();
+            Console.WriteLine("\n");
+
             Console.WriteLine("Выберите действие: ");
             Console.WriteLine("1.Добавить сумму.");
             Console.WriteLine("2.Вычесть сумму.");
+            Console.WriteLine("3.Перевод денег на другой счёт.");
             int vibor = int.Parse(Console.ReadLine());
 
             switch (vibor)
@@ -53,97 +63,45 @@ class program
                 case 1:
                     Console.Write("Введите сумму которое хотите добавить: ");
                     int summa_dob = int.Parse(Console.ReadLine());
-                    akk[0].DOB(summa_dob);
+                    akk[schet].DOB(summa_dob);
                     break;
                 case 2:
                     Console.Write("Введите сумму которое хотите вычесть: ");
                     int summa_vichest = int.Parse(Console.ReadLine());
-                    akk[0].UMEN(summa_vichest);
+                    akk[schet].UMEN(summa_vichest);
                     break;
+                case 3:
+                    Console.Clear();
+                    i = 1;
+                    foreach (Bank_Account a in akk)
+                    {
+                        Console.WriteLine(i++);
+                        a.INFO();
+                        Console.WriteLine("\n");
+                    }
+
+                    Console.WriteLine("Введите номер счёт для перевода: ");
+                    int perevod_schet = int.Parse(Console.ReadLine()) - 1;
+                    Console.WriteLine("Введите сумму: ");
+                    double summa = double.Parse(Console.ReadLine());
+
+                    akk[schet].PEREVOD_CHYOTA(akk[perevod_schet], summa);
+                    
+                    break;
+                    
                 default:
                     Console.WriteLine("Ошибка!");
+                    Console.ReadLine();
                     break;
             }
 
             Console.Clear();
+            i = 1;
             foreach (Bank_Account a in akk)
             {
+                Console.WriteLine(i++);
                 a.INFO();
                 Console.WriteLine("\n");
-            }
-        }
-
-        if (account == 2)
-        {
-            Console.WriteLine("Выберите действие: ");
-            Console.WriteLine("1.Добавить сумму.");
-            Console.WriteLine("2.Вычесть сумму.");
-            int vibor2 = int.Parse(Console.ReadLine());
-
-            switch (vibor2)
-            {
-                case 1:
-                    Console.Write("Введите сумму которое хотите добавить у 1ого аккаунта: ");
-                    int summa_dob1 = int.Parse(Console.ReadLine());
-                    akk[0].DOB(summa_dob1);
-                    Console.Write("Введите сумму которое хотите добавить у второго аккаунта: ");
-                    int summa_dob2 = int.Parse(Console.ReadLine());
-                    akk[1].DOB(summa_dob2);
-                    break;
-                case 2:
-                    Console.WriteLine("Введите сумму которое хотите вычесть у 1ого аккаунта: ");
-                    int summa_vich1 = int.Parse(Console.ReadLine());
-                    akk[0].UMEN(summa_vich1);
-                    Console.WriteLine("Введите сумму которое хотите вычесть у 2ого аккаунта: ");
-                    int summa_vichest2 = int.Parse(Console.ReadLine());
-                    akk[1].UMEN(summa_vichest2);
-                    break;
-                default:
-                    Console.WriteLine("Ошибка!");
-                    break;
-            }
-            Console.Clear();
-            foreach (Bank_Account a in akk)
-            {
-                a.INFO();
-                Console.WriteLine("\n");
-            }
-
-            Console.WriteLine("Выберите действие: ");
-            Console.WriteLine("1.с 1ого на 2рой.");
-            Console.WriteLine("2.c 2ого на 1ий.");
-            int vibor3 = int.Parse(Console.ReadLine());
-
-            switch (vibor3)
-            {
-                case 1:
-                    Console.WriteLine("Введите сумму для перевода: ");
-                    int perevod = int.Parse(Console.ReadLine());
-                    akk[0].PEREVOD_CHYOTA(akk[1], perevod);
-                    Console.Clear();
-                    Console.WriteLine("Обновлённая инфа.");
-                    foreach (Bank_Account a in akk)
-                    {
-                        a.INFO();
-                        Console.WriteLine("\n");
-                    }
-                    break;
-
-                case 2:
-                    Console.WriteLine("Введите сумму для перевода: ");
-                    int perevod2 = int.Parse(Console.ReadLine());
-                    akk[1].PEREVOD_CHYOTA(akk[0], perevod2);
-                    Console.Clear();
-                    Console.WriteLine("Обновлённая инфа.");
-                    foreach (Bank_Account a in akk)
-                    {
-                        a.INFO();
-                        Console.WriteLine("\n");
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Ошибка!");
-                    break;
             }
         }
     }
